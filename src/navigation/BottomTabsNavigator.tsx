@@ -1,28 +1,49 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {Text, View, StyleSheet} from 'react-native';
-
-// Define two example screens
-const HomeScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.text}>Home Screen</Text>
-  </View>
-);
-
-const SettingsScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.text}>Settings Screen</Text>
-  </View>
-);
+import {StyleSheet} from 'react-native';
+import NowPlayingScreen from '../screens/Nowplayingscreen';
+import MovieDetailsScreen from '../screens/MovieDetailsScreen';
+import UpcomingScreen from '../screens/UpcomingScreen';
+import TopRatedScreen from '../screens/TopRatedScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons or any other icon set
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabsNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+
+          switch (route.name) {
+            case 'NowPlaying':
+              iconName = 'movie';
+              break;
+            case 'Popular':
+              iconName = 'star';
+              break;
+            case 'Upcoming':
+              iconName = 'schedule';
+              break;
+            case 'TopRated':
+              iconName = 'star-rate';
+              break;
+            default:
+              iconName = 'help'; // Default icon for debugging
+          }
+
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+      <Tab.Screen name="NowPlaying" component={NowPlayingScreen} />
+      <Tab.Screen name="Popular" component={MovieDetailsScreen} />
+      <Tab.Screen name="Upcoming" component={UpcomingScreen} />
+      <Tab.Screen name="TopRated" component={TopRatedScreen} />
     </Tab.Navigator>
   );
 };
